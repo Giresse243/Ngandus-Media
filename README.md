@@ -1,6 +1,6 @@
-# 🎬 Ngandus Media - Creative Studio Platform
+# 🎬 Ngandus Media - Creative Studio Platform (South Africa)
 
-**Ngandus Media** is a professional creative media studio based in Africa, dedicated to helping content creators bring their vision to life.
+**Ngandus Media** is a professional creative media studio based in South Africa, dedicated to helping content creators bring their vision to life.
 
 ## 🎯 What We Do
 
