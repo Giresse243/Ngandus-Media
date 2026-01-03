@@ -55,9 +55,50 @@ async function loadAllContent() {
             updateEvents(data.events);
         }
 
+        // Update Services (dynamic from admin)
+        if (data.services && data.services.length > 0) {
+            updateServices(data.services);
+        }
+
     } catch (error) {
         console.log('Using static content - API not available:', error.message);
     }
+}
+
+/**
+ * Update Services Section with API data
+ */
+function updateServices(services) {
+    const servicesContainer = document.getElementById('services-container');
+    if (!servicesContainer) return;
+
+    // Clear existing static content
+    servicesContainer.innerHTML = '';
+
+    services.forEach(service => {
+        const priceDisplay = service.price
+            ? `<span style="color: #ffc107; font-size: 18px; font-weight: bold;">${service.price_description || 'From'} R${Number(service.price).toLocaleString()}</span>`
+            : '';
+
+        const imageUrl = service.icon || 'img/services/service-1.png';
+
+        const serviceCard = `
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="discography__item">
+                    <div class="discography__item__pic">
+                        <img src="${imageUrl}" alt="${service.title}">
+                    </div>
+                    <div class="discography__item__text">
+                        ${priceDisplay}
+                        <h4>${service.title}</h4>
+                        <p>${service.description}</p>
+                        <a href="./booking.html" class="primary-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        `;
+        servicesContainer.innerHTML += serviceCard;
+    });
 }
 
 /**
