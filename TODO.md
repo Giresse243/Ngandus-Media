@@ -1,28 +1,43 @@
 # 📋 Ngandus Media - TODO List
 
-## 🔴 High Priority
+## ✅ Completed
 
-### Frontend Updates
-- [ ] Update hero section with professional studio images
-- [ ] Add services page with all offerings (Video, Photo, Wedding, Events, Film)
-- [ ] Create booking page with service selection form
-- [ ] Update gallery with real portfolio images
-- [ ] Add pricing section for each service
+- [x] Set up Django backend with admin panel
+- [x] Create content management models (Hero, Services, Videos, etc.)
+- [x] Update frontend branding to Ngandus Media
+- [x] Create API endpoints for dynamic content
+- [x] Add booking request system
+- [x] Add contact form and newsletter
+- [x] Create README documentation
+- [x] Adapt site for South African market (Johannesburg/Cape Town)
+- [x] Create services page with all offerings
+- [x] Create booking page with service selection form
+- [x] Add pricing section for each service
+- [x] Add email notifications for bookings (admin + client)
+
+---
+
+## 🔴 High Priority (Next Steps)
+
+### Configuration
+- [ ] Configure Gmail SMTP credentials in `Backend/config/settings.py`
+- [ ] Run database migrations for new price fields
+- [ ] Test email delivery with a booking submission
 
 ### Content
 - [ ] Add real studio photos to `/frontend/img/`
-- [ ] Create promotional video for hero section
+- [ ] Update gallery with real portfolio images
 - [ ] Add testimonials from real clients
-- [ ] Update contact information (phone, email, address)
-
-### Backend Enhancements
-- [ ] Add email notifications when booking is received
-- [ ] Set up image optimization for uploads
-- [ ] Create pricing model for services
+- [ ] Create promotional video for hero section
 
 ---
 
 ## 🟡 Medium Priority
+
+### Features
+- [ ] Implement WhatsApp integration for quick contact
+- [ ] Add availability calendar for bookings
+- [ ] Add multi-language support (French/English)
 
 ### New Pages
 - [ ] Create dedicated pages for each service:
@@ -30,11 +45,6 @@
   - [ ] `/events.html` - Events coverage
   - [ ] `/studio.html` - Studio rental & photo shoots
   - [ ] `/film.html` - Film production
-
-### Features
-- [ ] Add availability calendar for bookings
-- [ ] Implement WhatsApp integration for quick contact
-- [ ] Add multi-language support (French/English)
 
 ---
 
@@ -45,15 +55,4 @@
 - [ ] Portfolio management system
 - [ ] Blog for tips and behind-the-scenes content
 - [ ] Live chat support
-
----
-
-## ✅ Completed
-
-- [x] Set up Django backend with admin panel
-- [x] Create content management models (Hero, Services, Videos, etc.)
-- [x] Update frontend branding to Ngandus Media
-- [x] Create API endpoints for dynamic content
-- [x] Add booking request system
-- [x] Add contact form and newsletter
-- [x] Create README documentation
+- [ ] Image optimization for uploads
