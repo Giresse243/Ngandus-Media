@@ -80,7 +80,11 @@ function updateServices(services) {
             ? `<span style="color: #ffc107; font-size: 18px; font-weight: bold;">${service.price_description || 'From'} R${Number(service.price).toLocaleString()}</span>`
             : '';
 
-        const imageUrl = service.icon || 'img/services/service-1.png';
+        // Use backend URL for uploaded images, fallback to local images
+        let imageUrl = 'img/services/service-1.png';
+        if (service.icon) {
+            imageUrl = service.icon.startsWith('http') ? service.icon : `http://localhost:8000${service.icon}`;
+        }
 
         const serviceCard = `
             <div class="col-lg-4 col-md-6 col-sm-6">
