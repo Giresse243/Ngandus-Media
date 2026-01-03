@@ -39,7 +39,7 @@ class AboutSectionAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['title', 'price', 'is_featured', 'order']
+    list_display = ['title', 'price', 'price_description', 'is_featured', 'order']
     list_filter = ['is_featured']
     list_editable = ['is_featured', 'order']
     search_fields = ['title']

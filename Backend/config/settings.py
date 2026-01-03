@@ -129,3 +129,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ADMIN_SITE_HEADER = "Ngandus Media Admin"
 ADMIN_SITE_TITLE = "Ngandus Media"
 ADMIN_INDEX_TITLE = "Content Management"
+
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@gmail.com'  # Update this
+EMAIL_HOST_PASSWORD = 'your-app-password'  # Update this with app-specific password
+DEFAULT_FROM_EMAIL = 'Ngandus Media <noreply@ngandusmedia.com>'
+ADMIN_EMAIL = 'contact@ngandusmedia.com'  # Email for receiving booking notifications

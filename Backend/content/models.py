@@ -78,7 +78,8 @@ class Service(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     icon = models.ImageField(upload_to='services/', blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, help_text="Starting price in ZAR")
+    price_description = models.CharField(max_length=200, blank=True, help_text="e.g., 'Starting from' or 'Per hour'")
     is_featured = models.BooleanField(default=False)
     order = models.PositiveIntegerField(default=0)
     
