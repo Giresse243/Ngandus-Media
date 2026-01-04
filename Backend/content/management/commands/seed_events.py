@@ -40,6 +40,14 @@ class Command(BaseCommand):
                 'location': 'Durban, South Africa',
                 'order': 4,
             },
+            {
+                'title': 'Fashion Portfolio Shoot',
+                'category': 'Photography',
+                'description': 'Studio Fashion Portraiture',
+                'date': date(2024, 2, 10),
+                'location': 'Johannesburg, South Africa',
+                'order': 5,
+            },
         ]
 
         for event_data in events_data:

@@ -3,7 +3,11 @@
  * Connects frontend to Django backend for dynamic content loading
  */
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000/api'
+    : 'https://your-backend-url.railway.app/api'; // REPLACE with your actual production backend URL
+
+const MEDIA_BASE_URL = API_BASE_URL.replace('/api', '');
 
 // Load all content on page load
 document.addEventListener('DOMContentLoaded', function () {
@@ -83,7 +87,7 @@ function updateServices(services) {
         // Use backend URL for uploaded images, fallback to local images
         let imageUrl = 'img/services/service-1.png';
         if (service.icon) {
-            imageUrl = service.icon.startsWith('http') ? service.icon : `http://localhost:8000${service.icon}`;
+            imageUrl = service.icon.startsWith('http') ? service.icon : `${MEDIA_BASE_URL}${service.icon}`;
         }
 
         const serviceCard = `
@@ -123,7 +127,7 @@ function updateEvents(events) {
                 imageUrl = event.image;
             } else {
                 const imagePath = event.image.startsWith('/') ? event.image : `/${event.image}`;
-                imageUrl = `http://localhost:8000${imagePath}`;
+                imageUrl = `${MEDIA_BASE_URL}${imagePath}`;
             }
         }
 
