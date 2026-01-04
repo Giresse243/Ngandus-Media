@@ -41,6 +41,8 @@ class HeroSection(models.Model):
 class Event(models.Model):
     """Events/Projects section"""
     title = models.CharField(max_length=200)
+    category = models.CharField(max_length=100, default="Event", help_text="e.g., Wedding, Music Video, Corporate Event")
+    description = models.TextField(blank=True, help_text="Short description with icon")
     date = models.DateField()
     location = models.CharField(max_length=200)
     image = models.ImageField(upload_to='events/')

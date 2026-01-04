@@ -106,6 +106,89 @@ function updateServices(services) {
 }
 
 /**
+ * Update Events/Projects Section with API data
+ */
+function updateEvents(events) {
+    const eventsSlider = document.querySelector('.event__slider');
+    if (!eventsSlider || !events || events.length === 0) return;
+
+    // Clear existing static content
+    eventsSlider.innerHTML = '';
+
+    events.forEach(event => {
+        // Handle image URL
+        let imageUrl = 'img/events/event-1.jpg';
+        if (event.image) {
+            if (event.image.startsWith('http')) {
+                imageUrl = event.image;
+            } else {
+                const imagePath = event.image.startsWith('/') ? event.image : `/${event.image}`;
+                imageUrl = `http://localhost:8000${imagePath}`;
+            }
+        }
+
+        // Add icon based on category
+        let icon = 'fa-calendar';
+        if (event.category && event.category.toLowerCase().includes('wedding')) icon = 'fa-heart';
+        else if (event.category && event.category.toLowerCase().includes('music')) icon = 'fa-music';
+        else if (event.category && event.category.toLowerCase().includes('video')) icon = 'fa-video-camera';
+        else if (event.category && event.category.toLowerCase().includes('youtube')) icon = 'fa-youtube-play';
+        else if (event.category && event.category.toLowerCase().includes('corporate')) icon = 'fa-building';
+
+        const eventCard = `
+            <div class="event__item">
+                <div class="event__item__pic set-bg" data-setbg="${imageUrl}">
+                    <div class="tag-date">
+                        <span>${event.category || 'Event'}</span>
+                    </div>
+                </div>
+                <div class="event__item__text">
+                    <h4>${event.title}</h4>
+                    <p><i class="fa ${icon}"></i> ${event.description || event.location}</p>
+                    <a href="projects.html" class="primary-btn">View Project</a>
+                </div>
+            </div>
+        `;
+        eventsSlider.innerHTML += eventCard;
+    });
+
+    console.log(`Events loaded: ${events.length}`);
+
+    // Reinitialize background images
+    setTimeout(() => {
+        $('.set-bg').each(function () {
+            var bg = $(this).data('setbg');
+            $(this).css('background-image', 'url(' + bg + ')');
+        });
+    }, 100);
+
+    // Reinitialize Owl Carousel
+    if (typeof $.fn.owlCarousel !== 'undefined') {
+        setTimeout(() => {
+            if ($(eventsSlider).data('owl.carousel')) {
+                $(eventsSlider).owlCarousel('destroy');
+            }
+            $(eventsSlider).owlCarousel({
+                loop: true,
+                margin: 0,
+                items: 3,
+                dots: false,
+                nav: true,
+                navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+                smartSpeed: 1200,
+                autoHeight: false,
+                autoplay: false,
+                responsive: {
+                    0: { items: 1 },
+                    768: { items: 2 },
+                    992: { items: 3 }
+                }
+            });
+        }, 200);
+    }
+}
+
+/**
  * Update Hero Section with API data
  */
 function updateHeroSection(hero) {
