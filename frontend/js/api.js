@@ -88,39 +88,48 @@ async function loadAllContent() {
  * Update Services Section with API data
  */
 function updateServices(services) {
-    const servicesContainer = document.getElementById('services-container');
-    if (!servicesContainer) return;
+    const servicesContainer = document.getElementById('services-list');
+    if (!servicesContainer || !services || services.length === 0) return;
 
     // Clear existing static content
     servicesContainer.innerHTML = '';
 
-    services.forEach(service => {
-        const priceDisplay = service.price
-            ? `<span style="color: #ffc107; font-size: 18px; font-weight: bold;">${service.price_description || 'From'} R${Number(service.price).toLocaleString()}</span>`
-            : '';
-
-        // Use backend URL for uploaded images, fallback to local images
+    services.forEach((service, index) => {
+        // Handle image URL
         let imageUrl = 'img/services/service-1.png';
         if (service.icon) {
             imageUrl = service.icon.startsWith('http') ? service.icon : `${MEDIA_BASE_URL}${service.icon}`;
         }
 
-        const serviceCard = `
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="discography__item">
-                    <div class="discography__item__pic">
-                        <img src="${imageUrl}" alt="${service.title}">
-                    </div>
-                    <div class="discography__item__text">
-                        ${priceDisplay}
-                        <h4>${service.title}</h4>
-                        <p>${service.description}</p>
-                        <a href="./booking.html" class="primary-btn">Book Now</a>
-                    </div>
+        // Price display
+        const priceHtml = service.price
+            ? `<p class="service-price"><strong>${service.price_description || 'From'} R${Number(service.price).toLocaleString()}</strong></p>`
+            : '';
+
+        // Checkerboard pattern logic for deep-bg
+        // Row 1: [0:deep, 1:light]
+        // Row 2: [2:light, 3:deep]
+        // Repeat every 4 items
+        const mod4 = index % 4;
+        const isDeep = (mod4 === 0 || mod4 === 3);
+        const deepClass = isDeep ? 'deep-bg' : '';
+
+        // Match the order and structure from index.html
+        // We'll use order-lg properties to maintain the checkerboard if needed, 
+        // but for a simple list, we can just append them.
+        const orderClass = `order-lg-${index + 1} order-md-${index + 1}`;
+
+        const serviceHtml = `
+            <div class="col-lg-6 p-0 ${orderClass} col-md-6">
+                <div class="service__item ${deepClass}">
+                    <img src="${imageUrl}" alt="${service.title}">
+                    <h4>${service.title}</h4>
+                    <p>${service.description}</p>
+                    ${priceHtml}
                 </div>
             </div>
         `;
-        servicesContainer.innerHTML += serviceCard;
+        servicesContainer.innerHTML += serviceHtml;
     });
 }
 
