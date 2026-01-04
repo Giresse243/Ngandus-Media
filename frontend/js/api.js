@@ -64,6 +64,21 @@ async function loadAllContent() {
             updateServices(data.services);
         }
 
+        // Update Service Video
+        if (data.service_video && Object.keys(data.service_video).length > 0) {
+            updateServiceVideo(data.service_video);
+        }
+
+        // Update Podcasts/Tracks
+        if (data.tracks && data.tracks.length > 0) {
+            updatePodcasts(data.tracks);
+        }
+
+        // Update Podcasts/Tracks
+        if (data.tracks && data.tracks.length > 0) {
+            updatePodcasts(data.tracks);
+        }
+
     } catch (error) {
         console.log('Using static content - API not available:', error.message);
     }
@@ -211,7 +226,11 @@ function updateHeroSection(hero) {
     if (heroDesc && hero.description) heroDesc.innerHTML = hero.description;
 
     const heroVideo = document.getElementById('hero-video');
-    if (heroVideo && hero.video_url) heroVideo.href = hero.video_url;
+    if (heroVideo && hero.video_url) {
+        heroVideo.href = hero.video_url;
+        // Re-init popup for this button
+        $(heroVideo).magnificPopup({ type: 'iframe' });
+    }
 }
 
 /**
@@ -234,6 +253,24 @@ function updateAboutSection(about) {
     if (aboutButton) {
         if (about.button_text) aboutButton.textContent = about.button_text;
         if (about.button_url) aboutButton.href = about.button_url;
+    }
+}
+
+/**
+ * Update Service Video Section
+ */
+function updateServiceVideo(video) {
+    const serviceVideoBg = document.getElementById('service-video-bg');
+    if (serviceVideoBg && video.thumbnail) {
+        serviceVideoBg.setAttribute('data-setbg', video.thumbnail);
+        $(serviceVideoBg).css('background-image', `url(${video.thumbnail})`);
+    }
+
+    const serviceVideoLink = document.getElementById('service-video-link');
+    if (serviceVideoLink && video.video_url) {
+        serviceVideoLink.href = video.video_url;
+        // Re-init popup
+        $(serviceVideoLink).magnificPopup({ type: 'iframe' });
     }
 }
 
@@ -310,6 +347,8 @@ function updateVideos(videos) {
                 const link = pic.querySelector('a');
                 if (link && video.video_url) {
                     link.href = video.video_url;
+                    // Re-init popup for the newly set link
+                    $(link).magnificPopup({ type: 'iframe' });
                 }
                 const title = item.querySelector('.youtube__item__text h4');
                 if (title && video.title) {
@@ -321,11 +360,114 @@ function updateVideos(videos) {
 }
 
 /**
+ * Update Podcasts/Tracks Section with API data
+ */
+function updatePodcasts(tracks) {
+    const trackContainer = document.querySelector('.track__content');
+    if (!trackContainer || !tracks || tracks.length === 0) return;
+
+    // Clear existing static tracks
+    trackContainer.innerHTML = '';
+
+    tracks.forEach((track, index) => {
+        const containerId = `jp_container_${index + 1}`;
+        const playerId = `jplayer_${index + 1}`;
+
+        // Handle audio URL
+        let audioUrl = track.external_url || '';
+        if (track.audio_file) {
+            if (track.audio_file.startsWith('http')) {
+                audioUrl = track.audio_file;
+            } else {
+                audioUrl = `${MEDIA_BASE_URL}${track.audio_file}`;
+            }
+        }
+
+        const trackHtml = `
+            <div class="single_player_container">
+                <h4>${track.title}</h4>
+                <div id="${playerId}" class="jplayer" data-ancestor=".${containerId}" data-url="${audioUrl}"></div>
+                <div class="jp-audio ${containerId}" role="application" aria-label="media player">
+                    <div class="jp-gui jp-interface">
+                        <!-- Player Controls -->
+                        <div class="player_controls_box">
+                            <button class="jp-play player_button" tabindex="0"></button>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="player_bars">
+                            <div class="jp-progress">
+                                <div class="jp-seek-bar">
+                                    <div>
+                                        <div class="jp-play-bar">
+                                            <div class="jp-current-time" role="timer" aria-label="time">0:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jp-duration ml-auto" role="timer" aria-label="duration">00:00</div>
+                        </div>
+                        <!-- Volume Controls -->
+                        <div class="jp-volume-controls">
+                            <button class="jp-mute" tabindex="0"><i class="fa fa-volume-down"></i></button>
+                            <div class="jp-volume-bar">
+                                <div class="jp-volume-bar-value" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        trackContainer.innerHTML += trackHtml;
+    });
+
+    // Initialize jPlayer for new tracks
+    setTimeout(() => {
+        if (typeof $.fn.jPlayer !== 'undefined') {
+            $('.jplayer').each(function () {
+                var player = $(this);
+                var ancestor = player.data('ancestor');
+                var songUrl = player.data('url');
+
+                // Only init if not already initialized
+                if (!player.data("jPlayer")) {
+                    player.jPlayer({
+                        ready: function () {
+                            $(this).jPlayer("setMedia", {
+                                mp3: songUrl
+                            });
+                        },
+                        play: function () {
+                            $(this).jPlayer("pauseOthers");
+                        },
+                        swfPath: "jPlayer",
+                        supplied: "mp3",
+                        cssSelectorAncestor: ancestor,
+                        wmode: "window",
+                        globalVolume: false,
+                        useStateClassSkin: true,
+                        autoBlur: false,
+                        smoothPlayBar: true,
+                        keyEnabled: true,
+                        solution: 'html',
+                        preload: 'metadata',
+                        volume: 0.8,
+                        muted: false,
+                        backgroundColor: '#000000',
+                        errorAlerts: false,
+                        warningAlerts: false
+                    });
+                }
+            });
+        }
+    }, 500);
+}
+
+/**
  * Update Events Section
  */
 function updateEvents(events) {
-    // Events would be updated in the event slider
-    console.log('Events loaded:', events.length);
+    // Events are already handled in updateEvents slider logic above
+    console.log('Events dynamic check:', events.length);
 }
 
 /**
